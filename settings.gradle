@@ -1,2 +1,5 @@
 rootProject.name = 'faster'
 
+include ':faster-benchmarks', ':faster-core'
+project(':faster-benchmarks').projectDir = new File('./benchmarks')
+project(':faster-core').projectDir = new File('./core')

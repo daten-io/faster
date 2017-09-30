@@ -1,0 +1,64 @@
+description = """Faster JMH Benchmark Suite"""
+
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+  jcenter()
+}
+
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+  }
+}
+
+test.enabled = false
+
+jar {
+  manifest {
+    attributes "Main-Class": "org.openjdk.jmh.Main"
+  }
+}
+
+ext {
+  jmh = 1.19
+}
+
+dependencies {
+  compile project(':faster-core')
+  compile "org.openjdk.jmh:jmh-core:$jmh"
+  compile "org.openjdk.jmh:jmh-generator-annprocess:$jmh"
+  compile "org.openjdk.jmh:jmh-core-benchmarks:$jmh"
+}
+
+javadoc {
+  enabled = false
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+  baseName = 'faster-benchmarks-all'
+  classifier = null
+  version = null
+}
+
+task jmh(type: JavaExec, dependsOn: [':faster-benchmarks:shadowJar']) {
+
+  main = "-jar"
+
+  doFirst {
+    args = [
+      "-Djava.io.tmpdir=${buildDir.absolutePath}",
+      "-XX:+UseParNewGC", "-XX:+UseConcMarkSweepGC", "-XX:CMSInitiatingOccupancyFraction=75",
+      "-XX:+UseCMSInitiatingOccupancyOnly", "-XX:+DisableExplicitGC",
+      "-XX:+HeapDumpOnOutOfMemoryError", "-Xms2g", "-Xmx2g",
+      shadowJar.archivePath,
+    ]
+  }
+}
