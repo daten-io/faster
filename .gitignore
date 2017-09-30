@@ -1,3 +1,6 @@
 .gradle
 build
 .idea
+faster.iml
+faster.ipr
+faster.iws
