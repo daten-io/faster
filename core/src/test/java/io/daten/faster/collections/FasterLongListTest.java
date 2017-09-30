@@ -5,20 +5,20 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link FasterIntList}.
+ * Tests for {@link FasterLongList}.
  */
-public final class FasterIntListTest {
+public final class FasterLongListTest {
 
     @Test
     public void providesRandomAccessList() {
-        final FasterIntList list = new FasterIntList(10);
+        final FasterLongList list = new FasterLongList(10);
         final int index = 1000;
-        final int value = 444;
+        final long value = 444L;
         list.set(index, value);
         assertThat(list.get(index)).isEqualTo(value);
         assertThat(list.get(0)).isEqualTo(0);
         assertThat(list.size()).isEqualTo(index + 1);
-        final int head = 2222;
+        final long head = 2222L;
         list.add(head);
         assertThat(list.size()).isEqualTo(index + 2);
         assertThat(list.get(index + 1)).isEqualTo(head);
