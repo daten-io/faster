@@ -50,10 +50,6 @@ public final class UnsafeUtil {
         }
     }
 
-    public static boolean unsafeSupported() {
-        return UNSAFE != null;
-    }
-
     /**
      * @return Unsafe instance or {@code null} if current System does not support the Unsafe
      */
