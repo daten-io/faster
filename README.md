@@ -1,3 +1,3 @@
-[![Build Status](https://travis-ci.org/original-brownbear/faster.svg?branch=master)](https://travis-ci.org/original-brownbear/faster)
+[![Build Status](https://travis-ci.org/daten-io/faster.svg?branch=master)](https://travis-ci.org/daten-io/faster)
 
 ### Faster
