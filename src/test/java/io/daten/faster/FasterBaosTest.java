@@ -1,4 +1,4 @@
-package io.obrown;
+package io.daten.faster;
 
 import org.junit.Test;
 
