@@ -35,6 +35,14 @@ public final class FasterBaos extends ByteArrayOutputStream {
         out.write(buf, 0, count);
     }
 
+    /**
+     * Returns the underlying byte array.
+     * @return Underlying {@code byte[]}
+     */
+    public byte[] unsafeBuffer() {
+        return buf;
+    }
+
     private void ensureCapacity(final int minCapacity) {
         if (minCapacity - buf.length > 0) {
             grow(minCapacity);
