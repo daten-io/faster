@@ -19,11 +19,11 @@ public final class FasterByteComparison {
         final int minLength = Math.min(length1, length2);
         // Shortcut for (minLength / 8) * 8
         final int fullWordBytes = minLength & ~7;
-        final int offset1Adj = offset1 + UnsafeUtil.BYTE_ARRAY_OFFSET;
-        final int offset2Adj = offset2 + UnsafeUtil.BYTE_ARRAY_OFFSET;
+        final int memPos1 = offset1 + UnsafeUtil.BYTE_ARRAY_OFFSET;
+        final int memPos2 = offset2 + UnsafeUtil.BYTE_ARRAY_OFFSET;
         for (int i = 0; i < fullWordBytes; i += Long.BYTES) {
-            final long left = UNSAFE.getLong(buffer1, offset1Adj + (long) i);
-            final long right = UNSAFE.getLong(buffer2, offset2Adj + (long) i);
+            final long left = UNSAFE.getLong(buffer1, (long) memPos1 + (long) i);
+            final long right = UNSAFE.getLong(buffer2, (long) memPos2 + (long) i);
             if (left != right) {
                 if (PlatformUtil.IS_LITTLE_ENDIAN) {
                     return Long.compareUnsigned(Long.reverseBytes(left), Long.reverseBytes(right));
