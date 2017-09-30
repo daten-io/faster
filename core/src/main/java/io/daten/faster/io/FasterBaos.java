@@ -1,4 +1,4 @@
-package io.daten.faster;
+package io.daten.faster.io;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

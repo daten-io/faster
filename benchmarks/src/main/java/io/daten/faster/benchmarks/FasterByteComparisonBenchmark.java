@@ -1,6 +1,6 @@
 package io.daten.faster.benchmarks;
 
-import io.daten.faster.FasterByteComparison;
+import io.daten.faster.memory.FasterByteComparison;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;

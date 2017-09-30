@@ -1,4 +1,4 @@
-package io.daten.faster;
+package io.daten.faster.memory;
 
 import java.nio.charset.StandardCharsets;
 import org.junit.Test;

@@ -1,5 +1,7 @@
-package io.daten.faster;
+package io.daten.faster.memory;
 
+import io.daten.faster.PlatformUtil;
+import io.daten.faster.UnsafeUtil;
 import sun.misc.Unsafe;
 
 public final class FasterByteComparison {
