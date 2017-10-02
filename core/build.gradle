@@ -54,3 +54,55 @@ task sourcesJar(type: Jar) {
   classifier = 'sources'
   from sourceSets.main.allSource
 }
+
+artifacts {
+  archives javadocJar, sourcesJar
+}
+
+signing {
+  sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'Faster'
+        packaging 'jar'
+        description 'Faster alternatives to common JDK classes.'
+        url 'http://www.daten.io/faster'
+
+        scm {
+          connection 'scm:git:git@github.com:daten-io/faster.git'
+          developerConnection 'scm:git:git@github.com:daten-io/faster.git'
+          url 'https://github.com/daten-io/faster'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'original-brownbear'
+            name 'Armin Braun'
+            email 'me@obrown.io'
+          }
+        }
+      }
+    }
+  }
+}
