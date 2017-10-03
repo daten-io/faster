@@ -1,7 +1,106 @@
-group 'io.daten'
-version '0.0.2'
+allprojects {
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'signing'
+  group 'io.daten'
+  version '1.0-SNAPSHOT'
+
+  apply plugin: 'java'
+  apply plugin: 'idea'
+  apply plugin: 'maven'
+  apply plugin: 'signing'
+
+  sourceCompatibility = JavaVersion.VERSION_1_8
+
+  tasks.withType(Test) {
+    testLogging {
+      events "passed", "skipped", "failed", "standardOut"
+      showExceptions true
+      exceptionFormat "full"
+      showCauses true
+      showStackTraces true
+
+      debug {
+        events "started", "passed", "skipped", "failed", "standardOut", "standardError"
+        exceptionFormat "full"
+      }
+      info.events = debug.events
+      info.exceptionFormat = debug.exceptionFormat
+
+      afterSuite { desc, result ->
+        if (!desc.parent) {
+          def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+          def startItem = '|  ', endItem = '  |'
+          def repeatLength = startItem.length() + output.length() + endItem.length()
+          println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+        }
+      }
+    }
+  }
+
+  task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+  }
+
+  task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+  }
+
+  artifacts {
+    archives javadocJar, sourcesJar
+  }
+
+  signing {
+    sign configurations.archives
+  }
+
+  ext {
+    user = ossrhUsername ?: ""
+    password = ossrhPassword ?: ""
+  }
+
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+          authentication(userName: user, password: password)
+        }
+
+        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+          authentication(userName: user, password: password)
+        }
+
+        pom.project {
+          name 'Faster'
+          packaging 'jar'
+          description 'Faster alternatives to common JDK classes.'
+          url 'http://www.daten.io/faster'
+
+          scm {
+            connection 'scm:git:git@github.com:daten-io/faster.git'
+            developerConnection 'scm:git:git@github.com:daten-io/faster.git'
+            url 'https://github.com/daten-io/faster'
+          }
+
+          licenses {
+            license {
+              name 'The Apache License, Version 2.0'
+              url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+          }
+
+          developers {
+            developer {
+              id 'original-brownbear'
+              name 'Armin Braun'
+              email 'me@obrown.io'
+            }
+          }
+        }
+      }
+    }
+  }
+}

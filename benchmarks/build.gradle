@@ -1,7 +1,5 @@
 description = """Faster JMH Benchmark Suite"""
 
-apply plugin: 'java'
-
 repositories {
   mavenCentral()
   jcenter()
