@@ -1,7 +1,7 @@
 subprojects {
 
   group 'io.daten'
-  version '0.0.3'
+  version '1.0-SNAPSHOT'
 
   apply plugin: 'java'
   apply plugin: 'idea'
