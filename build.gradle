@@ -1,4 +1,4 @@
-allprojects {
+subprojects {
 
   group 'io.daten'
   version '1.0-SNAPSHOT'
@@ -52,6 +52,8 @@ allprojects {
   ext {
     mavenUser = project.hasProperty('ossrhUsername') ? project.ossrhUsername : ""
     mavenPassword = project.hasProperty('ossrhPassword') ? project.ossrhPassword : ""
+    skipSigning = project.hasProperty('skipSigning') && skipSigning.toBoolean()
+    shouldSign = !skipSigning && project.gradle.startParameter.taskNames.any { it.contains("upload") }
   }
 
   uploadArchives {
@@ -59,6 +61,7 @@ allprojects {
       apply plugin: 'signing'
 
       signing {
+        required { shouldSign }
         sign configurations.archives
       }
 
