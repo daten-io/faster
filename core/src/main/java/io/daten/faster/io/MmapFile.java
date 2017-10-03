@@ -1,5 +1,6 @@
 package io.daten.faster.io;
 
+import io.daten.faster.PlatformUtil;
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
@@ -30,7 +31,11 @@ public final class MmapFile implements Closeable {
     @Override
     public void close() throws IOException {
         channel.close();
-        final Cleaner cleaner = ((DirectBuffer) this.buffer).cleaner();
-        if (cleaner != null) { cleaner.clean(); }
+        if (PlatformUtil.IS_WINDOWS) {
+            final Cleaner cleaner = ((DirectBuffer) this.buffer).cleaner();
+            if (cleaner != null) {
+                cleaner.clean();
+            }
+        }
     }
 }
