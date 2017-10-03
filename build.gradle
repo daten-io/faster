@@ -50,10 +50,6 @@ allprojects {
     archives javadocJar, sourcesJar
   }
 
-  signing {
-    sign configurations.archives
-  }
-
   ext {
     mavenUser = project.hasProperty('ossrhUsername') ? project.ossrhUsername : ""
     mavenPassword = project.hasProperty('ossrhPassword') ? project.ossrhPassword : ""
@@ -61,6 +57,11 @@ allprojects {
 
   uploadArchives {
     repositories {
+
+      signing {
+        sign configurations.archives
+      }
+
       mavenDeployer {
 
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
